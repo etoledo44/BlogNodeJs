@@ -1,0 +1,6 @@
+{{#if success_msg}} {{!-- pegando os dados da varivel global que foi armazenda no admin.js, e criada no app.js em sessoes --}}
+    <div class="alert alert-success">{{success_msg}}</div> 
+{{/if}}
+{{#if error_msg}}
+    <div class="alert alert-danger">{{error_msg}}</div>
+{{/if}}

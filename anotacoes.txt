@@ -1,0 +1,30 @@
+public - onde ficaram os arquivos estaticos da aplicacao, como imagens 
+routes - onde estão todas as rotas da aplição 
+views  - tela a parte visual da aplicacao 
+models - schema do db, processos do banco de dados
+app.js - dará o inicio na aplicao 
+middleware - um intermediador entre req, e res, toda a requisacao ou response irá passar primeiro por ele, para que possa ser feita algum tipo de autenticação
+
+futuramente voltar no codigo e refatorar para o padrão mvc(model, view, controller)
+
+
+//alguns trechos de codigo 
+const novaCategoria = { // criando um obj com os dados coletado da requisicao 
+        nome: req.body.nome,
+        slug: req.body.slug
+    }
+    //instanciando o model Categoria e passando o obj com os dados da req como parametro para ser armazenado no db
+    new Categoria(novaCategoria).save().then(()=>{
+        req.flash('success_msg', 'Categoria criada com sucesso!')
+        res.redirect('/admin/categorias')
+    }).catch(err => {
+        req.flash('error_msg', 'Houve um erro ao salvar a categoria!')
+        res.redirect('/admin')
+    })
+
+//usando callback, promisse 
+then(()=>{
+    console.log('deu certo')
+}).catch(err => {
+    console.log(`erro`)
+})
