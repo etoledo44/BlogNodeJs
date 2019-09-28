@@ -1,0 +1,20 @@
+{{#each erros}} 
+{{!-- usando o #each para percorrer o array com os erros que vem do arquivo admin.js --}}
+    <div class="alert alert-danger">{{text}}</div>  
+{{else}}
+{{/each}}
+
+<h3>Editar categoria</h3>
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/categorias/edit" method="POST">
+        <input type="hidden" name="id" value="{{categorias.id}}">
+            <label for="nome">Nome:</label>
+            <input class="form-control" type="text" name="nome" id="nome" placeholder="Nome da categoria" value="{{categorias.nome}}">
+            <label for="slug">Slug:</label>
+            <input class="form-control" type="text" name="slug" id="slug" placeholder="Slug da categoria" value="{{categorias.slug}}">
+            <br>
+            <button type="submit" class="btn btn-success">Salvar</button>
+        </form>
+    </div>
+</div>

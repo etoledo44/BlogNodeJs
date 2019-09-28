@@ -51,7 +51,7 @@ const flash = require('connect-flash') //package para sessoes
     //others
     const PORT = 3333
     app.listen(PORT, ()=>{
-        console.log('Servidor rodando...')
+        console.log(`Servidor rodando em localhost://${PORT}`)
     }) //abrindo uma porta para rodar a aplicação
 
 
