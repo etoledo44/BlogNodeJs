@@ -99,7 +99,7 @@ const db = require('./config/db') //requisitando o modo de conexao
     app.use('/admin', admin) //a rota ja pode ser acessada via url
 
     //others
-    const PORT =process.env.PORT || 3333 //o heroku usa porta aleatoria, por isso usar o process.env.PORT do node
+    const PORT =process.env.PORT || 3000 //o heroku usa porta aleatoria, por isso usar o process.env.PORT do node
     app.listen(PORT, ()=>{
         console.log(`Servidor rodando em localhost://${PORT}`)
     }) //abrindo uma porta para rodar a aplicação
