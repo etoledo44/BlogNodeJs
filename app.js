@@ -3,11 +3,16 @@ const express = require ('express')
 const handlebars = require('express-handlebars') // handlebars é um motor grafico que ajuda na renderizacao de telas
 const bodyParse = require('body-parser')
 const admin = require('./routes/admin') // importando o admin para poder usar a rota
+const categorias = require('./routes/categorias')
+const login = require('./routes/login')
 const path = require ('path')
 const app = express() //exportando a funcao express para usar routes e outras features
 const mongoose = require('mongoose')
 const session = require('express-session') //package para sessoes
 const flash = require('connect-flash') //package para sessoes
+require('./models/Postagem')
+const Postagem = mongoose.model('postagens')
+require('./models/Categoria')
 
 
 //config
@@ -46,6 +51,41 @@ const flash = require('connect-flash') //package para sessoes
     app.use(express.static(path.join(__dirname, 'public'))) //fazer o express acessar a pasta public para ter acesso aos arq. estaticos
     
     // routes
+    app.get('/', (req, res)=>{
+        Postagem.find().populate('categoria').sort({data: 'desc'}).then((postagens)=>{
+            res.render('index', {postagens: postagens})
+
+        }).catch(err =>{
+            req.flash(`error_msg', 'Erro ao carregar postagens [${err}]`)
+            res.redirect('/404')
+        })
+
+        
+    })
+
+    app.get('/postagem/:slug', (req, res)=>{
+        Postagem.findOne({slug: req.params.slug}).then((postagens)=>{
+            if(postagens){
+                res.render('postagens/index', {postagens: postagens})
+
+            }else{
+                req.flash('error_msg', `Não existe essa postagem!`)
+                res.redirect('/')
+
+            }
+        }).catch(err=>{
+            req.flash('error_msg', `A postagem não existe [${err}]`)
+        })
+
+    })
+
+    app.get('/404', (req, res)=>{
+        res.send('erro 404!')
+    })
+
+    app.use('/login', login)
+    app.use('/categoria', categorias)
+
     app.use('/admin', admin) //a rota ja pode ser acessada via url
 
     //others
