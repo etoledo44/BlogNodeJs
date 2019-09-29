@@ -51,7 +51,7 @@ const db = require('./config/db') //requisitando o modo de conexao
     
     //mongoose, conxexao com o banco de dados 
     mongoose.Promise = global.Promise
-    mongoose.connect(db.mongoURI).then(()=>{ //mongodb://localhost/blogapp -> para conexao local
+    mongoose.connect(db.mongoURI, {useNewUrlParser: true}).then(()=>{ //mongodb://localhost/blogapp -> para conexao local
         console.log('Conectado ao banco')
     }).catch(err => {
         console.error(`Erro: ${err}`)
