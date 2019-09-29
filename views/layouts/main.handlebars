@@ -10,6 +10,12 @@
 <body>
     {{>_navbar}}
     <div class="container mt-4">
+        {{#if error}}
+            <div class="alert alert-danger">{{error}}</div>
+        {{else}}
+
+        {{/if}}
+        
         {{>_msg}} {{!-- exibe um alert com informações que estao na variavel global, o _msg está na pasta partials --}}
          
         {{{body}}}

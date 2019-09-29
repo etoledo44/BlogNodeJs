@@ -4,7 +4,8 @@ const handlebars = require('express-handlebars') // handlebars é um motor grafi
 const bodyParse = require('body-parser')
 const admin = require('./routes/admin') // importando o admin para poder usar a rota
 const categorias = require('./routes/categorias')
-const login = require('./routes/login')
+const usuario = require('./routes/usuario')
+const registrar = require('./routes/resgistrar')
 const path = require ('path')
 const app = express() //exportando a funcao express para usar routes e outras features
 const mongoose = require('mongoose')
@@ -13,6 +14,10 @@ const flash = require('connect-flash') //package para sessoes
 require('./models/Postagem')
 const Postagem = mongoose.model('postagens')
 require('./models/Categoria')
+const passport = require('passport')
+require('./config/auth') (passport)
+const db = require('./config/db') //requisitando o modo de conexao 
+
 
 
 //config
@@ -23,11 +28,16 @@ require('./models/Categoria')
         resave: true,
         saveUninitialized: true
     }))
+    app.use(passport.initialize())
+    app.use(passport.session())
     app.use(flash())
+    
     //middleware
     app.use((req, res, next)=>{
         res.locals.success_msg = req.flash('success_msg') //declaração de variavel global 
         res.locals.error_msg = req.flash('error_msg')
+        res.locals.error = req.flash('error')
+        res.locals.user = req.user || null;
         next() //permite a req ou res avançar 
     })
 
@@ -41,7 +51,7 @@ require('./models/Categoria')
     
     //mongoose, conxexao com o banco de dados 
     mongoose.Promise = global.Promise
-    mongoose.connect('mongodb://localhost/blogapp').then(()=>{
+    mongoose.connect(db.mongoURI).then(()=>{ //mongodb://localhost/blogapp -> para conexao local
         console.log('Conectado ao banco')
     }).catch(err => {
         console.error(`Erro: ${err}`)
@@ -80,16 +90,16 @@ require('./models/Categoria')
     })
 
     app.get('/404', (req, res)=>{
-        res.send('erro 404!')
+        res.render('erro')
     })
 
-    app.use('/login', login)
+    app.use('/usuario', usuario)
     app.use('/categoria', categorias)
 
     app.use('/admin', admin) //a rota ja pode ser acessada via url
 
     //others
-    const PORT = 3333
+    const PORT =process.env.PORT || 3333 //o heroku usa porta aleatoria, por isso usar o process.env.PORT do node
     app.listen(PORT, ()=>{
         console.log(`Servidor rodando em localhost://${PORT}`)
     }) //abrindo uma porta para rodar a aplicação

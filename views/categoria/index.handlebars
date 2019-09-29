@@ -1,1 +1,14 @@
-<h1>OI</h1>
+<div>
+    <h2>Categorias</h2>
+</div>
+{{#each categorias}}
+
+<a href="categoria/{{slug}}" style="text-decoration-line: none">
+    <div class="card mt-3">
+        <div class="card-body">
+            <h2>{{nome}}</h2>
+        </div>
+    </div>
+</a>
+{{else}}
+{{/each}}
